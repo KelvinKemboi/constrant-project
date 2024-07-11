@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Magari</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="login">login</string>
+    <string name="dont_have_account">Do not have an account?\nClick here to sign up</string>
+    <string name="name">name</string>
+    <string name="signup">signup</string>
+    <string name="already_have_account">Already have an account?\nClick here to login</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="empty" />
+    <string name="home">Home</string>
+    <string name="about">about</string>
+    <string name="logout">logout</string>
+    <string name="mit">This is the common text</string>
+    <string name="Home">Home</string>
+    <string name="Search">Search\n</string>
+    <string name="Settings">Settings\n</string>
+    <string name="Cart">Cart</string>
+    <string name="Profile">Profile</string>
+    <string name="Logout">Logout</string>
+    <string name="Dashboard">Dashboard</string>
+    <string name="title_activity_join_us">JoinUs</string>
+</resources>
