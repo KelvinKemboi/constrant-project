@@ -1,12 +1,15 @@
 package net.ezra.ui.shop
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,11 +20,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomAppBar
+import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
@@ -36,14 +45,13 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -71,48 +79,79 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.ezra.R
-import net.ezra.ui.dashboard.NavItemState
+import net.ezra.navigation.ROUTE_DASHBOARD
+import net.ezra.navigation.ROUTE_HOME
+import net.ezra.navigation.ROUTE_INSERT_PRODUCT
+import net.ezra.navigation.ROUTE_LOGIN
+import net.ezra.navigation.ROUTE_VIEW_PRODUCTS
 import net.ezra.ui.dashboard.PageIndicator
 
-data class NavItemState(
+data class Item(
     val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    val hasBadge: Boolean,
-    val badgeNumber: Int,
+    @DrawableRes val image: Int,
+    val description: String,
 
     )
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ShopScreen(navController: NavHostController){
-    val item = listOf(
-        NavItemState(
-            title = "Cart",
-            selectedIcon = Icons.Filled.ShoppingCart,
-            unselectedIcon = Icons.Outlined.ShoppingCart,
-            hasBadge = true,
-            badgeNumber = 10
-        ),
-        NavItemState(
-            title = "Home",
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home,
-            hasBadge = false,
-            badgeNumber = 0
-        ),
-        NavItemState(
-            title = "Email",
-            selectedIcon = Icons.Filled.Email,
-            unselectedIcon = Icons.Outlined.Email,
-            hasBadge = true,
-            badgeNumber = 0
-        ),
+
+        val items = listOf(
+            Item(
+                title = "Electronics",
+                image = R.drawable.s1,
+                description = "Details"
+            ),
+            Item(
+                title = "Wood Products",
+                image = R.drawable.s2,
+                description = "Details"
+            ),
+            Item(
+                title = "Metals",
+                image = R.drawable.d13,
+                description = "Details"
+            ),
+            Item(
+                title = "Roofing Materials",
+                image = R.drawable.d12,
+                description = "Details"
+            ),
+            Item(
+                title = "Doors and Window",
+                image = R.drawable.d14,
+                description = "Details"
+            ),
+            Item(
+                title = "Bricks",
+                image = R.drawable.d15,
+                description = "Details"
+            ),
+            Item(
+                title = "Flooring",
+                image = R.drawable.d5,
+                description = "Details"
+            ),
+            Item(
+                title = "Paints",
+                image = R.drawable.d6,
+                description = "Details"
+            ),
+            Item(
+                title = "Plumbing",
+                image = R.drawable.d4,
+                description = "Details"
+            ),
+            Item(
+                title = "Insulation Material",
+                image = R.drawable.d1,
+                description = "Details"
+            ),
 
         )
 
-    var bottomNavState by rememberSaveable {
-        mutableStateOf(0) }
+
 
     var search by remember { mutableStateOf("") }
     var images = listOf(
@@ -138,11 +177,11 @@ fun ShopScreen(navController: NavHostController){
 
     Scaffold(
         topBar = {
-            TopAppBar(title = {Text("DASHBOARD",
+            TopAppBar(title = {Text("SHOP",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,)},
                 navigationIcon = {
-                    IconButton(onClick = {}
+                    IconButton(onClick = {navController.navigate(ROUTE_INSERT_PRODUCT)}
                     ) { Icon(imageVector = Icons.Filled.Menu, contentDescription = "null")}
 
                 }
@@ -151,31 +190,39 @@ fun ShopScreen(navController: NavHostController){
 
         },
         bottomBar = {
-            NavigationBar {
-                item.forEachIndexed { index, item ->
-
-                    NavigationBarItem(
-                        selected = bottomNavState == index,
-                        onClick = { bottomNavState = index },
-                        icon = {
-                            BadgedBox(badge = {
-                                if (item.hasBadge)Badge {}
-                                if (item.badgeNumber != 0)Badge {
-                                    Text(text = item.badgeNumber.toString())
-                                }
-
-
-                            }){
-                                Icon(imageVector = if (bottomNavState == index) item.selectedIcon
-                                else item.unselectedIcon,
-                                    contentDescription = item.title)
-                            }
-                        }
+            BottomAppBar(
+                modifier = Modifier
+                    .background(Color(0xFF156B46))
+                    .clip(RoundedCornerShape(20.dp))
+                    .padding(10.dp),
+            ){
+                Row(
+                    modifier = Modifier
+                        .background(Color(0xFFF8FFFC))
+                        .clip(RoundedCornerShape(20.dp))
+                        .padding(10.dp)
+                        .fillMaxWidth(),
+                ){
+                    Spacer(modifier = Modifier.width(50.dp))
+                    Icon(imageVector =Icons.Outlined.ShoppingCart , contentDescription ="null",
+                        modifier = Modifier
+                            .clickable { navController.navigate(ROUTE_VIEW_PRODUCTS) }
                     )
 
+                    Spacer(modifier = Modifier.width(80.dp))
+
+                    Icon(imageVector =Icons.Outlined.Home , contentDescription ="null",
+                        modifier = Modifier
+                            .clickable { navController.navigate(ROUTE_HOME) }
+                    )
+
+                    Spacer(modifier = Modifier.width(80.dp))
+
+                    Icon(imageVector =Icons.Outlined.Email , contentDescription ="null",
+                        modifier = Modifier
+                            .clickable { navController.navigate(ROUTE_DASHBOARD) }
+                    )
                 }
-
-
             }
 
 
@@ -192,7 +239,7 @@ fun ShopScreen(navController: NavHostController){
                 .fillMaxSize()
                 .background(Color(0xFF156B46))
                 .padding(contentpadding)){
-            item {
+            items(1) {
                 Column {
 
                     Spacer(modifier = Modifier.height(15.dp))
@@ -228,106 +275,8 @@ fun ShopScreen(navController: NavHostController){
                         horizontalAlignment = Alignment.CenterHorizontally
 
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .fillMaxWidth()
 
-                        ) {
-                            HorizontalPager(
-                                state = pagerState,
-                                modifier = Modifier
-                                    .wrapContentSize()
-                            ) { currentPage ->
-
-                                Card(
-                                    modifier = Modifier
-                                        .wrapContentSize()
-
-                                        .padding(26.dp),
-                                    elevation = CardDefaults.cardElevation(20.dp)
-                                ) {
-                                    Image(
-                                        painter = painterResource(id = images[currentPage]),
-                                        contentDescription = "null",
-                                        modifier = Modifier
-                                            .width(300.dp)
-                                            .height(300.dp)
-                                    )
-
-                                }
-
-
-                            }
-
-                            IconButton(
-                                onClick = {
-                                    val nextPage = pagerState.currentPage + 1
-                                    if (nextPage < images.size) {
-                                        scope.launch {
-                                            pagerState.animateScrollToPage(nextPage)
-                                        }
-                                    }
-                                },
-                                modifier = Modifier
-                                    .padding(40.dp)
-                                    .size(40.dp)
-                                    .align(Alignment.CenterEnd)
-                                    .clip(CircleShape),
-                                colors = IconButtonDefaults.iconButtonColors(
-                                    containerColor = Color.DarkGray
-                                )
-
-                            ) {
-
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                    contentDescription = "null",
-                                    modifier = Modifier
-                                        .fillMaxSize(),
-                                    tint = Color.LightGray
-                                )
-
-                            }
-
-                            IconButton(
-                                onClick = {
-                                    val previousPage = pagerState.currentPage - 1
-                                    if (previousPage >= 0) {
-                                        scope.launch {
-                                            pagerState.animateScrollToPage(previousPage)
-                                        }
-                                    }
-                                },
-                                modifier = Modifier
-                                    .padding(30.dp)
-                                    .size(40.dp)
-                                    .align(Alignment.CenterStart)
-                                    .clip(CircleShape),
-                                colors = IconButtonDefaults.iconButtonColors(
-                                    containerColor = Color.DarkGray
-                                )
-                            ) {
-
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                                    contentDescription = "null",
-                                    modifier = Modifier
-                                        .fillMaxSize(),
-                                    tint = Color.LightGray
-                                )
-
-                            }
-
-                        }
-
-                        PageIndicator(
-                            pageCount = images.size,
-                            currentPage = pagerState.currentPage,
-                            modifier = Modifier
-                        )
-
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(15.dp))
                         Text(
                             text = "CATEGORIES",
                             fontSize = 20.sp,
@@ -336,441 +285,22 @@ fun ShopScreen(navController: NavHostController){
                                 .align(Alignment.CenterHorizontally)
                         )
 
-                        Spacer(modifier = Modifier.height(20.dp))
-                        Divider(thickness = 1.dp, color = Color.Gray)
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(15.dp))
+//                        Divider(thickness = 1.dp, color = Color.Gray)
+//                        Spacer(modifier = Modifier.height(20.dp))
 
-
-                        Row {
-                            Spacer(modifier = Modifier.width(15.dp))
-                            Card(
-                                modifier = Modifier
-                                    .height(170.dp)
-                                    .width(170.dp),
-                                elevation = CardDefaults.cardElevation(20.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White)
+                        LazyVerticalGrid(columns = GridCells.Fixed(2,),
+                            modifier = Modifier
+                                .padding(10.dp),
+                            contentPadding = PaddingValues(vertical = 16.dp,),
                             ) {
-                                Column {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.s1),
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                            .fillMaxWidth(),
-                                        contentDescription = "null"
-                                    )
 
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Electronics",
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textDecoration = TextDecoration.Underline,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Discover cheap electronic materials at shockingly low prices",
-                                        fontSize = 10.sp,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-
-                                }
-
-                            }
-
-                            Spacer(modifier = Modifier.width(15.dp))
-
-                            Card(
-                                modifier = Modifier
-                                    .height(150.dp)
-                                    .width(150.dp),
-                                elevation = CardDefaults.cardElevation(20.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White)
-                            ) {
-                                Column {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.s1),
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                            .fillMaxWidth(),
-                                        contentDescription = "null"
-                                    )
-
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Electronics",
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textDecoration = TextDecoration.Underline,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Discover cheap electronic materials at shockingly low prices",
-                                        fontSize = 10.sp,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-
-                                }
-
-                            }
+                       itemsIndexed(items){ index, item ->
+                           GridItem(item = item)
+                           Spacer(modifier = Modifier.height(20.dp))
+                       }
 
                         }
-
-                        Spacer(modifier = Modifier.height(20.dp))
-
-                        Row {
-                            Spacer(modifier = Modifier.width(15.dp))
-                            Card(
-                                modifier = Modifier
-                                    .height(170.dp)
-                                    .width(170.dp),
-                                elevation = CardDefaults.cardElevation(20.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White)
-                            ) {
-                                Column {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.s1),
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                            .fillMaxWidth(),
-                                        contentDescription = "null"
-                                    )
-
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Electronics",
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textDecoration = TextDecoration.Underline,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Discover cheap electronic materials at shockingly low prices",
-                                        fontSize = 10.sp,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-
-                                }
-
-                            }
-
-                            Spacer(modifier = Modifier.width(15.dp))
-
-                            Card(
-                                modifier = Modifier
-                                    .height(150.dp)
-                                    .width(150.dp),
-                                elevation = CardDefaults.cardElevation(20.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White)
-                            ) {
-                                Column {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.s1),
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                            .fillMaxWidth(),
-                                        contentDescription = "null"
-                                    )
-
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Electronics",
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textDecoration = TextDecoration.Underline,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Discover cheap electronic materials at shockingly low prices",
-                                        fontSize = 10.sp,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-
-                                }
-
-                            }
-
-                        }
-
-                        Spacer(modifier = Modifier.height(20.dp))
-
-                        Row {
-                            Spacer(modifier = Modifier.width(15.dp))
-                            Card(
-                                modifier = Modifier
-                                    .height(170.dp)
-                                    .width(170.dp),
-                                elevation = CardDefaults.cardElevation(20.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White)
-                            ) {
-                                Column {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.s1),
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                            .fillMaxWidth(),
-                                        contentDescription = "null"
-                                    )
-
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Electronics",
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textDecoration = TextDecoration.Underline,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Discover cheap electronic materials at shockingly low prices",
-                                        fontSize = 10.sp,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-
-                                }
-
-                            }
-
-                            Spacer(modifier = Modifier.width(15.dp))
-
-                            Card(
-                                modifier = Modifier
-                                    .height(150.dp)
-                                    .width(150.dp),
-                                elevation = CardDefaults.cardElevation(20.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White)
-                            ) {
-                                Column {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.s1),
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                            .fillMaxWidth(),
-                                        contentDescription = "null"
-                                    )
-
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Electronics",
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textDecoration = TextDecoration.Underline,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Discover cheap electronic materials at shockingly low prices",
-                                        fontSize = 10.sp,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-
-                                }
-
-                            }
-
-                        }
-
-                        Spacer(modifier = Modifier.height(20.dp))
-
-                        Row {
-                            Spacer(modifier = Modifier.width(15.dp))
-                            Card(
-                                modifier = Modifier
-                                    .height(170.dp)
-                                    .width(170.dp),
-                                elevation = CardDefaults.cardElevation(20.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White)
-                            ) {
-                                Column {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.s1),
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                            .fillMaxWidth(),
-                                        contentDescription = "null"
-                                    )
-
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Electronics",
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textDecoration = TextDecoration.Underline,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Discover cheap electronic materials at shockingly low prices",
-                                        fontSize = 10.sp,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-
-                                }
-
-                            }
-
-                            Spacer(modifier = Modifier.width(15.dp))
-
-                            Card(
-                                modifier = Modifier
-                                    .height(150.dp)
-                                    .width(150.dp),
-                                elevation = CardDefaults.cardElevation(20.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White)
-                            ) {
-                                Column {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.s1),
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                            .fillMaxWidth(),
-                                        contentDescription = "null"
-                                    )
-
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Electronics",
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textDecoration = TextDecoration.Underline,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Discover cheap electronic materials at shockingly low prices",
-                                        fontSize = 10.sp,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-
-                                }
-
-                            }
-
-                        }
-
-                        Spacer(modifier = Modifier.height(20.dp))
-
-                        Row {
-                            Spacer(modifier = Modifier.width(15.dp))
-                            Card(
-                                modifier = Modifier
-                                    .height(170.dp)
-                                    .width(170.dp),
-                                elevation = CardDefaults.cardElevation(20.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White)
-                            ) {
-                                Column {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.s1),
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                            .fillMaxWidth(),
-                                        contentDescription = "null"
-                                    )
-
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Electronics",
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textDecoration = TextDecoration.Underline,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Discover cheap electronic materials at shockingly low prices",
-                                        fontSize = 10.sp,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-
-                                }
-
-                            }
-
-                            Spacer(modifier = Modifier.width(15.dp))
-
-                            Card(
-                                modifier = Modifier
-                                    .height(150.dp)
-                                    .width(150.dp),
-                                elevation = CardDefaults.cardElevation(20.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White)
-                            ) {
-                                Column {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.s1),
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                            .fillMaxWidth(),
-                                        contentDescription = "null"
-                                    )
-
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Electronics",
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textDecoration = TextDecoration.Underline,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-                                    Spacer(modifier = Modifier.height(10.dp))
-
-                                    Text(
-                                        text = "Discover cheap electronic materials at shockingly low prices",
-                                        fontSize = 10.sp,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                    )
-
-                                }
-
-                            }
-
-                        }
-
-                        Spacer(modifier = Modifier.height(50.dp))
-
 
                         Spacer(modifier = Modifier.height(10.dp))
                         Divider(thickness = 1.dp, color = Color.Gray)
@@ -1560,6 +1090,106 @@ fun ShopScreen(navController: NavHostController){
                             }
                         }
 
+                        Box(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .fillMaxWidth()
+
+                        ) {
+                            HorizontalPager(
+                                state = pagerState,
+                                modifier = Modifier
+                                    .wrapContentSize()
+                            ) { currentPage ->
+
+                                Card(
+                                    modifier = Modifier
+                                        .wrapContentSize()
+
+                                        .padding(26.dp),
+                                    elevation = CardDefaults.cardElevation(20.dp)
+                                ) {
+                                    Image(
+                                        painter = painterResource(id = images[currentPage]),
+                                        contentDescription = "null",
+                                        modifier = Modifier
+                                            .width(300.dp)
+                                            .height(300.dp)
+                                    )
+
+                                }
+
+
+                            }
+
+                            IconButton(
+                                onClick = {
+                                    val nextPage = pagerState.currentPage + 1
+                                    if (nextPage < images.size) {
+                                        scope.launch {
+                                            pagerState.animateScrollToPage(nextPage)
+                                        }
+                                    }
+                                },
+                                modifier = Modifier
+                                    .padding(40.dp)
+                                    .size(40.dp)
+                                    .align(Alignment.CenterEnd)
+                                    .clip(CircleShape),
+                                colors = IconButtonDefaults.iconButtonColors(
+                                    containerColor = Color.DarkGray
+                                )
+
+                            ) {
+
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                    contentDescription = "null",
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    tint = Color.LightGray
+                                )
+
+                            }
+
+                            IconButton(
+                                onClick = {
+                                    val previousPage = pagerState.currentPage - 1
+                                    if (previousPage >= 0) {
+                                        scope.launch {
+                                            pagerState.animateScrollToPage(previousPage)
+                                        }
+                                    }
+                                },
+                                modifier = Modifier
+                                    .padding(30.dp)
+                                    .size(40.dp)
+                                    .align(Alignment.CenterStart)
+                                    .clip(CircleShape),
+                                colors = IconButtonDefaults.iconButtonColors(
+                                    containerColor = Color.DarkGray
+                                )
+                            ) {
+
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                                    contentDescription = "null",
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    tint = Color.LightGray
+                                )
+
+                            }
+
+                        }
+
+                        PageIndicator(
+                            pageCount = images.size,
+                            currentPage = pagerState.currentPage,
+                            modifier = Modifier
+                        )
+
+
                     }
                 }
 
@@ -1572,6 +1202,60 @@ fun ShopScreen(navController: NavHostController){
 }
 
 
+@Composable
+fun GridItem(item: Item){
+    Card(
+        modifier = Modifier
+            .height(200.dp)
+            .padding(15.dp)
+            .width(150.dp),
+        elevation = CardDefaults.cardElevation(20.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {
+        Column {
+            Image(
+                painter = painterResource(id = item.image),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth(),
+                contentDescription = "null"
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                text = item.title,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+
+            androidx.compose.material3.Button(
+                onClick = {  },
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(40.dp)
+                    .align(Alignment.CenterHorizontally),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
+                elevation = ButtonDefaults.elevatedButtonElevation(20.dp)
+
+            ) {
+                Text(
+                    text = item.description,
+                    fontSize = 10.sp,
+                    color = Color.Black,
+
+                    )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+
+        }
+
+    }
+}
 
 @Preview(showBackground = true)
     @Composable

@@ -278,7 +278,7 @@ Scaffold(
                                 ) {
                                     Column {
                                         Image(
-                                            painter = painterResource(id = R.drawable.s1),
+                                            painter = painterResource(id = R.drawable.h1),
                                             modifier = Modifier
                                                 .align(Alignment.CenterHorizontally)
                                                 .fillMaxWidth(),
@@ -297,13 +297,6 @@ Scaffold(
                                         )
                                         Spacer(modifier = Modifier.height(10.dp))
 
-                                        Text(
-                                            text = "Discover cheap electronic materials at shockingly low prices",
-                                            fontSize = 10.sp,
-                                            modifier = Modifier
-                                                .align(Alignment.CenterHorizontally)
-                                        )
-
                                     }
 
                                 }
@@ -318,7 +311,7 @@ Scaffold(
                                 ) {
                                     Column {
                                         Image(
-                                            painter = painterResource(id = R.drawable.s1),
+                                            painter = painterResource(id = R.drawable.h2),
                                             modifier = Modifier
                                                 .align(Alignment.CenterHorizontally)
                                                 .fillMaxWidth(),
@@ -337,12 +330,6 @@ Scaffold(
                                         )
                                         Spacer(modifier = Modifier.height(10.dp))
 
-                                        Text(
-                                            text = "Discover cheap electronic materials at shockingly low prices",
-                                            fontSize = 10.sp,
-                                            modifier = Modifier
-                                                .align(Alignment.CenterHorizontally)
-                                        )
 
                                     }
 
@@ -358,7 +345,7 @@ Scaffold(
                                 ) {
                                     Column {
                                         Image(
-                                            painter = painterResource(id = R.drawable.s1),
+                                            painter = painterResource(id = R.drawable.h3),
                                             modifier = Modifier
                                                 .align(Alignment.CenterHorizontally)
                                                 .fillMaxWidth(),
@@ -377,12 +364,6 @@ Scaffold(
                                         )
                                         Spacer(modifier = Modifier.height(10.dp))
 
-                                        Text(
-                                            text = "Discover cheap electronic materials at shockingly low prices",
-                                            fontSize = 10.sp,
-                                            modifier = Modifier
-                                                .align(Alignment.CenterHorizontally)
-                                        )
 
                                     }
 
@@ -398,7 +379,7 @@ Scaffold(
                                 ) {
                                     Column {
                                         Image(
-                                            painter = painterResource(id = R.drawable.s1),
+                                            painter = painterResource(id = R.drawable.h4),
                                             modifier = Modifier
                                                 .align(Alignment.CenterHorizontally)
                                                 .fillMaxWidth(),
@@ -417,12 +398,6 @@ Scaffold(
                                         )
                                         Spacer(modifier = Modifier.height(10.dp))
 
-                                        Text(
-                                            text = "Discover cheap electronic materials at shockingly low prices",
-                                            fontSize = 10.sp,
-                                            modifier = Modifier
-                                                .align(Alignment.CenterHorizontally)
-                                        )
 
                                     }
 
@@ -438,7 +413,7 @@ Scaffold(
                                 ) {
                                     Column {
                                         Image(
-                                            painter = painterResource(id = R.drawable.s1),
+                                            painter = painterResource(id = R.drawable.h5),
                                             modifier = Modifier
                                                 .align(Alignment.CenterHorizontally)
                                                 .fillMaxWidth(),
@@ -456,14 +431,6 @@ Scaffold(
                                                 .align(Alignment.CenterHorizontally)
                                         )
                                         Spacer(modifier = Modifier.height(10.dp))
-
-                                        Text(
-                                            text = "Discover cheap electronic materials at shockingly low prices",
-                                            fontSize = 10.sp,
-                                            modifier = Modifier
-                                                .align(Alignment.CenterHorizontally)
-                                        )
-
                                     }
 
                                 }
@@ -478,9 +445,10 @@ Scaffold(
                                 ) {
                                     Column {
                                         Image(
-                                            painter = painterResource(id = R.drawable.s1),
+                                            painter = painterResource(id = R.drawable.h6),
                                             modifier = Modifier
                                                 .align(Alignment.CenterHorizontally)
+                                                .height(100.dp)
                                                 .fillMaxWidth(),
                                             contentDescription = "null"
                                         )
@@ -496,14 +464,6 @@ Scaffold(
                                                 .align(Alignment.CenterHorizontally)
                                         )
                                         Spacer(modifier = Modifier.height(10.dp))
-
-                                        Text(
-                                            text = "Discover cheap electronic materials at shockingly low prices",
-                                            fontSize = 10.sp,
-                                            modifier = Modifier
-                                                .align(Alignment.CenterHorizontally)
-                                        )
-
                                     }
 
                                 }
@@ -518,7 +478,7 @@ Scaffold(
                                 ) {
                                     Column {
                                         Image(
-                                            painter = painterResource(id = R.drawable.s1),
+                                            painter = painterResource(id = R.drawable.h7),
                                             modifier = Modifier
                                                 .align(Alignment.CenterHorizontally)
                                                 .fillMaxWidth(),
@@ -536,13 +496,6 @@ Scaffold(
                                                 .align(Alignment.CenterHorizontally)
                                         )
                                         Spacer(modifier = Modifier.height(10.dp))
-
-                                        Text(
-                                            text = "Discover cheap electronic materials at shockingly low prices",
-                                            fontSize = 10.sp,
-                                            modifier = Modifier
-                                                .align(Alignment.CenterHorizontally)
-                                        )
 
                                     }
 
@@ -767,14 +720,15 @@ Scaffold(
                         ) {
                             Column {
                                 Image(
-                                    painter = painterResource(id = R.drawable.s1),
+                                    painter = painterResource(id = R.drawable.h8),
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
+                                        .height(100.dp)
                                         .fillMaxWidth(),
                                     contentDescription = "null"
                                 )
 
-                                Spacer(modifier = Modifier.height(10.dp))
+                                Spacer(modifier = Modifier.height(8.dp))
 
                                 Text(
                                     text = "Electronics",
@@ -784,10 +738,10 @@ Scaffold(
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
                                 )
-                                Spacer(modifier = Modifier.height(10.dp))
+                                Spacer(modifier = Modifier.height(8.dp))
 
                                 Text(
-                                    text = "Discover cheap electronic materials at shockingly low prices",
+                                    text = "Discover electronics at shockingly low prices",
                                     fontSize = 10.sp,
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
@@ -808,27 +762,28 @@ Scaffold(
                         ) {
                             Column {
                                 Image(
-                                    painter = painterResource(id = R.drawable.s1),
+                                    painter = painterResource(id = R.drawable.h9),
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
+                                        .height(80.dp)
                                         .fillMaxWidth(),
                                     contentDescription = "null"
                                 )
 
-                                Spacer(modifier = Modifier.height(10.dp))
+                                Spacer(modifier = Modifier.height(8.dp))
 
                                 Text(
-                                    text = "Electronics",
+                                    text = "Metallic pipes",
                                     fontSize = 15.sp,
                                     fontWeight = FontWeight.Bold,
                                     textDecoration = TextDecoration.Underline,
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
                                 )
-                                Spacer(modifier = Modifier.height(10.dp))
+                                Spacer(modifier = Modifier.height(8.dp))
 
                                 Text(
-                                    text = "Discover cheap electronic materials at shockingly low prices",
+                                    text = "Durable metallic pipes for your home",
                                     fontSize = 10.sp,
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
@@ -853,27 +808,28 @@ Scaffold(
                         ) {
                             Column {
                                 Image(
-                                    painter = painterResource(id = R.drawable.s1),
+                                    painter = painterResource(id = R.drawable.h10),
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
+                                        .height(100.dp)
                                         .fillMaxWidth(),
                                     contentDescription = "null"
                                 )
 
-                                Spacer(modifier = Modifier.height(10.dp))
+                                Spacer(modifier = Modifier.height(8.dp))
 
                                 Text(
-                                    text = "Electronics",
+                                    text = "Cement",
                                     fontSize = 15.sp,
                                     fontWeight = FontWeight.Bold,
                                     textDecoration = TextDecoration.Underline,
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
                                 )
-                                Spacer(modifier = Modifier.height(10.dp))
+                                Spacer(modifier = Modifier.height(8.dp))
 
                                 Text(
-                                    text = "Discover cheap electronic materials at shockingly low prices",
+                                    text = "High quality cement for your home",
                                     fontSize = 10.sp,
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
@@ -894,27 +850,28 @@ Scaffold(
                         ) {
                             Column {
                                 Image(
-                                    painter = painterResource(id = R.drawable.s1),
+                                    painter = painterResource(id = R.drawable.p9),
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
+                                        .height(80.dp)
                                         .fillMaxWidth(),
                                     contentDescription = "null"
                                 )
 
-                                Spacer(modifier = Modifier.height(10.dp))
+                                Spacer(modifier = Modifier.height(8.dp))
 
                                 Text(
-                                    text = "Electronics",
+                                    text = "Roofing tiles",
                                     fontSize = 15.sp,
                                     fontWeight = FontWeight.Bold,
                                     textDecoration = TextDecoration.Underline,
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
                                 )
-                                Spacer(modifier = Modifier.height(10.dp))
+                                Spacer(modifier = Modifier.height(8.dp))
 
                                 Text(
-                                    text = "Discover cheap electronic materials at shockingly low prices",
+                                    text = "Weather resistant roofing tiles for your home",
                                     fontSize = 10.sp,
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)

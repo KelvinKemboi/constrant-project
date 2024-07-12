@@ -69,13 +69,14 @@ fun SplashScreen(navController: NavHostController) {
         R.drawable.sp1,
         R.drawable.sp2,
         R.drawable.sp3,
+        R.drawable.p4,
 
     )
     val pagerState = rememberPagerState (pageCount = { images.size })
 
     LaunchedEffect(Unit) {
         while (true) {
-            delay(2000)
+            delay(1000)
             val nextPage = (pagerState.currentPage + 1) % pagerState.pageCount
             pagerState.animateScrollToPage(nextPage)
         }
@@ -109,12 +110,12 @@ fun SplashScreen(navController: NavHostController) {
             targetValue = 0.7f,
             // tween Animation
             animationSpec = tween(
-                durationMillis = 1000,
+                durationMillis = 8000,
                 easing = {
                     OvershootInterpolator(4f).getInterpolation(it)
                 }))
         // Customize the delay time
-        delay(20000L)
+        delay(4000L)
         navController.navigate(ROUTE_HOME)
     }
 Scaffold(

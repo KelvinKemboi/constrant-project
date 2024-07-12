@@ -29,6 +29,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomAppBar
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Divider
 //noinspection UsingMaterialAndMaterial3Libraries
@@ -100,17 +101,13 @@ import com.google.android.play.integrity.internal.w
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.ezra.R
+import net.ezra.navigation.ROUTE_DASHBOARD
+import net.ezra.navigation.ROUTE_HOME
+import net.ezra.navigation.ROUTE_INSERT_PRODUCT
 import net.ezra.navigation.ROUTE_SHOP
 import net.ezra.navigation.ROUTE_VIEW_PRODUCTS
 
-data class NavItemState(
-    val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    val hasBadge: Boolean ,
-    val badgeNumber: Int,
 
-)
 data class DrawerItems(
 val icon: ImageVector,
 val text: String,
@@ -123,30 +120,7 @@ val badgeNumber: Int,
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun DashboardScreen(navController: NavHostController){
-val item = listOf(
-    NavItemState(
-        title = "Cart",
-        selectedIcon = Icons.Filled.ShoppingCart,
-        unselectedIcon = Icons.Outlined.ShoppingCart,
-        hasBadge = true,
-        badgeNumber = 10
-    ),
-    NavItemState(
-        title = "Home",
-        selectedIcon = Icons.Filled.Home,
-        unselectedIcon = Icons.Outlined.Home,
-        hasBadge = false,
-        badgeNumber = 0
-    ),
-    NavItemState(
-        title = "Email",
-        selectedIcon = Icons.Filled.Email,
-        unselectedIcon = Icons.Outlined.Email,
-        hasBadge = true,
-        badgeNumber = 0
-    ),
 
-)
 
 val drawerItem = listOf(
     DrawerItems(
@@ -182,9 +156,6 @@ val drawerItem = listOf(
 
 )
 
-
-    var bottomNavState by rememberSaveable {
-        mutableStateOf(0) }
 
 var selectedItem by remember {
     mutableStateOf(drawerItem[0])
@@ -324,32 +295,40 @@ Scaffold(
 
         },
 bottomBar = {
-       NavigationBar {
-           item.forEachIndexed { index, item ->
+  BottomAppBar(
+      modifier = Modifier
+          .clip(RoundedCornerShape(20.dp))
+          .fillMaxWidth()
+          .padding(10.dp),
+  ){
+   Row(
+       modifier = Modifier
+           .background(Color(0xFFF8FFFC))
+           .clip(RoundedCornerShape(20.dp))
+           .padding(10.dp)
+           .fillMaxWidth(),
+   ){
+       Spacer(modifier = Modifier.width(50.dp))
+       Icon(imageVector =Icons.Outlined.ShoppingCart , contentDescription ="null",
+            modifier = Modifier
+                .clickable { navController.navigate(ROUTE_VIEW_PRODUCTS) }
+           )
 
-               NavigationBarItem(
-                   selected = bottomNavState == index,
-                   onClick = { bottomNavState = index },
-                   icon = {
-                       BadgedBox(badge = {
-                           if (item.hasBadge)Badge {}
-                           if (item.badgeNumber != 0)Badge {
-                               Text(text = item.badgeNumber.toString())
-                           }
+       Spacer(modifier = Modifier.width(80.dp))
 
+       Icon(imageVector =Icons.Outlined.Home , contentDescription ="null",
+           modifier = Modifier
+               .clickable { navController.navigate(ROUTE_HOME) }
+           )
+       
+       Spacer(modifier = Modifier.width(80.dp))
 
-                           }){
-                        Icon(imageVector = if (bottomNavState == index) item.selectedIcon
-                                           else item.unselectedIcon,
-                            contentDescription = item.title)
-               }
-                   }
-               )
-
-           }
-
-
-       }
+       Icon(imageVector =Icons.Outlined.Email , contentDescription ="null",
+                modifier = Modifier
+                    .clickable { navController.navigate(ROUTE_DASHBOARD) }
+           )
+   }
+  }
 
 
 
@@ -583,7 +562,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d1),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -618,7 +597,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d2),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -653,7 +632,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d3),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -688,7 +667,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d4),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -723,7 +702,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d5),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -758,7 +737,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d6),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -793,7 +772,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d7),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -924,7 +903,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d8),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -959,7 +938,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d9),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -994,7 +973,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d10),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1029,7 +1008,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d11),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1064,7 +1043,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d12),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1099,7 +1078,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d13),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1134,7 +1113,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d14),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1208,7 +1187,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d15),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1243,7 +1222,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d16),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1278,7 +1257,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d17),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1313,7 +1292,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d18),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1348,7 +1327,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d19),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1383,7 +1362,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d20),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1418,7 +1397,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d21),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1492,7 +1471,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d22),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1527,7 +1506,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d23),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1562,7 +1541,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d24),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1597,7 +1576,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d25),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1632,7 +1611,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d26),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1667,7 +1646,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.d27),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1702,7 +1681,7 @@ Spacer(modifier = Modifier.width(120.dp))
                                  colors = CardDefaults.cardColors(containerColor = Color.White)
                              ){
                                  Column {
-                                     Image(painter = painterResource(id = R.drawable.s1),
+                                     Image(painter = painterResource(id = R.drawable.p8),
                                          modifier = Modifier
                                              .align(Alignment.CenterHorizontally)
                                              .fillMaxWidth(),
@@ -1826,7 +1805,7 @@ Spacer(modifier = Modifier.width(120.dp))
 
                              Spacer(modifier = Modifier.height(20.dp))
                              Text(
-                                 text = "Delv deeper: ",
+                                 text = "Delve deeper: ",
                                  fontWeight = FontWeight.Bold,
                                  fontSize = 15.sp
 
@@ -1834,7 +1813,7 @@ Spacer(modifier = Modifier.width(120.dp))
                              Spacer(modifier = Modifier.height(10.dp))
 
                              Button(
-                                 onClick = { navController.navigate(ROUTE_VIEW_PRODUCTS) },
+                                 onClick = { navController.navigate(ROUTE_INSERT_PRODUCT) },
                                  modifier = Modifier
                                      .padding(16.dp)
                                      .width(200.dp)

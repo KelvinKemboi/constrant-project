@@ -173,7 +173,8 @@ fun ProductListItem(product: Product, onItemClick: (String) -> Unit) {
                 painter = rememberAsyncImagePainter(product.imageUrl),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(60.dp)
+                    .fillMaxWidth()
+                    .height(100.dp)
                     .align(Alignment.CenterHorizontally)
             )
 
